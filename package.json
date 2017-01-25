@@ -1,6 +1,6 @@
 {
   "name": "stream-file-type",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "license": "MIT",
   "repository": "LinusU/stream-file-type",
   "scripts": {
