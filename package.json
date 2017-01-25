@@ -1,0 +1,18 @@
+{
+  "name": "stream-file-type",
+  "version": "0.0.0",
+  "license": "MIT",
+  "repository": "LinusU/stream-file-type",
+  "scripts": {
+    "test": "standard && mocha"
+  },
+  "dependencies": {
+    "file-type": "^4.1.0",
+    "readable-stream": "^2.2.2"
+  },
+  "devDependencies": {
+    "hasha": "^2.2.0",
+    "mocha": "^3.2.0",
+    "standard": "^8.6.0"
+  }
+}
