@@ -11,7 +11,17 @@ const FileType = require('stream-file-type')
 const input = fs.createReadStream('cat.jpg')
 const detector = new FileType()
 
+// Listen for event...
 detector.on('file-type', (fileType) => {
+  if (fileType === null) {
+    console.log(`The mime type of "cat.jpg" could not be determined`)
+  } else {
+    console.log(`The file "cat.jpg" has the "${fileType.mime}" mime type`)
+  }
+})
+
+// ...or get a Promise
+detector.fileTypePromise().then((fileType) => {
   if (fileType === null) {
     console.log(`The mime type of "cat.jpg" could not be determined`)
   } else {
