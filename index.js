@@ -1,3 +1,5 @@
+'use strict'
+
 const fileType = require('file-type')
 const Transform = require('readable-stream/transform')
 
