@@ -41,7 +41,7 @@ describe('stream-file-type', () => {
     detector.on('file-type', fileType => { emitted = fileType })
 
     return detector.fileTypePromise()
-      .then(type => assert.deepEqual(type, { ext: 'woff2', mime: 'application/font-woff' }))
-      .then(() => assert.deepEqual(emitted, { ext: 'woff2', mime: 'application/font-woff' }))
+      .then(type => assert.deepEqual(type, { ext: 'woff2', mime: 'font/woff2' }))
+      .then(() => assert.deepEqual(emitted, { ext: 'woff2', mime: 'font/woff2' }))
   })
 })
