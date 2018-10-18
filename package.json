@@ -7,7 +7,7 @@
     "test": "standard && mocha"
   },
   "dependencies": {
-    "file-type": "^4.1.0",
+    "file-type": "^7.7.1",
     "readable-stream": "^2.2.2"
   },
   "devDependencies": {
