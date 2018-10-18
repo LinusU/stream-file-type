@@ -6,6 +6,10 @@
   "scripts": {
     "test": "standard && mocha"
   },
+  "files": [
+    "index.d.ts",
+    "index.js"
+  ],
   "dependencies": {
     "file-type": "^10.0.0",
     "readable-stream": "^3.0.6"
