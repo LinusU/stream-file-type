@@ -1,7 +1,5 @@
 /* eslint-env mocha */
 
-'use strict'
-
 const fs = require('fs')
 const assert = require('assert')
 const hasha = require('hasha')

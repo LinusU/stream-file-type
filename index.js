@@ -1,7 +1,5 @@
-'use strict'
-
 const fileType = require('file-type')
-const Transform = require('readable-stream/transform')
+const { Transform } = require('readable-stream')
 
 const kChunks = Symbol('chunks')
 const kLength = Symbol('length')
