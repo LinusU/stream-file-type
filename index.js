@@ -32,7 +32,7 @@ class FileType extends Transform {
     this[kDone] = true
     this[kResult] = fileType(Buffer.concat(this[kChunks]))
 
-    this.emit('file-type', this[kResult])
+    this.emit('file-type', this[kResult] || null)
 
     delete this[kChunks]
     delete this[kLength]
