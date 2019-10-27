@@ -43,7 +43,7 @@ describe('stream-file-type', () => {
       .then(() => assert.deepStrictEqual(emitted, { ext: 'woff2', mime: 'font/woff2' }))
   })
 
-  it('should handle files with undefined file type', () => {
+  it('should handle files with unknown file type', () => {
     const input = fs.createReadStream('fixture/test.invalidf')
     const detector = new FileType()
 
@@ -53,7 +53,7 @@ describe('stream-file-type', () => {
     detector.on('file-type', fileType => { emitted = fileType })
 
     return detector.fileTypePromise()
-      .then(type => assert.deepStrictEqual(type, undefined))
-      .then(() => assert.deepStrictEqual(emitted, undefined))
+      .then(type => assert.strictEqual(type, null))
+      .then(() => assert.strictEqual(emitted, null))
   })
 })
