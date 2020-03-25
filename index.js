@@ -1,62 +1,47 @@
 const fileType = require('file-type')
-const { Transform } = require('stream')
+const { PassThrough, Transform } = require('stream')
 
-const kChunks = Symbol('chunks')
-const kLength = Symbol('length')
-const kDone = Symbol('done')
 const kResult = Symbol('result')
-const kEmitFileType = Symbol('emit-file-type')
-
-const TARGET_BYTES = 4100
+const kStream = Symbol('stream')
 
 class FileType extends Transform {
   constructor () {
     super()
 
-    this[kChunks] = []
-    this[kLength] = 0
-    this[kDone] = false
-    this[kResult] = null
+    this[kStream] = new PassThrough()
+
+    this[kResult] = fileType.fromStream(this[kStream]).then(
+      (value) => {
+        this[kStream] = null
+        this.emit('file-type', value || null)
+        return value || null
+      },
+      () => {
+        this[kStream] = null
+        this.emit('file-type', null)
+        return null
+      }
+    )
   }
 
   fileTypePromise () {
-    return new Promise((resolve, reject) => {
-      if (this[kDone]) return resolve(this[kResult])
-
-      this.once('error', reject)
-      this.once('file-type', resolve)
-    })
-  }
-
-  [kEmitFileType] () {
-    this[kDone] = true
-    this[kResult] = fileType(Buffer.concat(this[kChunks]))
-
-    this.emit('file-type', this[kResult] || null)
-
-    delete this[kChunks]
-    delete this[kLength]
+    return this[kResult]
   }
 
   _transform (chunk, _, cb) {
-    if (!this[kDone]) {
-      this[kChunks].push(chunk)
-      this[kLength] += chunk.length
-
-      if (this[kLength] >= TARGET_BYTES) {
-        this[kEmitFileType]()
-      }
+    if (this[kStream] != null) {
+      this[kStream].write(chunk, () => cb(null, chunk))
+    } else {
+      cb(null, chunk)
     }
-
-    cb(null, chunk)
   }
 
   _flush (cb) {
-    if (!this[kDone]) {
-      this[kEmitFileType]()
+    if (this[kStream] != null) {
+      this[kStream].end(() => cb(null))
+    } else {
+      cb(null)
     }
-
-    cb(null)
   }
 }
 

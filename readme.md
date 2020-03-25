@@ -45,4 +45,4 @@ When enough bytes have come thru to determine the file type (currently 4100) the
 
 ### `FileType#fileTypePromise() => Promise`
 
-Returns a `Promise` of the detected file type. If the `file-type` event has already been emitted, the promise will be resolved with the result, otherwise the promise will be resolved when the file-type is detected, or rejected if an error occurs.
+Returns a `Promise` of the detected file type. If the `file-type` event has already been emitted, the promise will be resolved with the result, otherwise the promise will be resolved when the file-type is detected.
