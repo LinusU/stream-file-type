@@ -30,10 +30,10 @@ export default class FileType extends Transform {
 
   _transform (chunk, _, cb) {
     if (this[kStream] != null) {
-      this[kStream].write(chunk, () => cb(null, chunk))
-    } else {
-      cb(null, chunk)
+      this[kStream].write(chunk)
     }
+
+    cb(null, chunk)
   }
 
   _flush (cb) {
