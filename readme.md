@@ -5,8 +5,8 @@ Get the [file type](https://github.com/sindresorhus/file-type) by inspecting a s
 ## Usage
 
 ```js
-const fs = require('fs')
-const FileType = require('stream-file-type')
+import fs from 'node:fs'
+import FileType from 'stream-file-type'
 
 const input = fs.createReadStream('cat.jpg')
 const detector = new FileType()

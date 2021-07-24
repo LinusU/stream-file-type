@@ -1,10 +1,10 @@
-const fileType = require('file-type')
-const { PassThrough, Transform } = require('stream')
+import { PassThrough, Transform } from 'node:stream'
+import fileType from 'file-type'
 
 const kResult = Symbol('result')
 const kStream = Symbol('stream')
 
-class FileType extends Transform {
+export default class FileType extends Transform {
   constructor () {
     super()
 
@@ -44,5 +44,3 @@ class FileType extends Transform {
     }
   }
 }
-
-module.exports = FileType
