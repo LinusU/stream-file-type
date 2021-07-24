@@ -1,13 +1,13 @@
 /* eslint-env mocha */
 
-const fs = require('fs')
-const assert = require('assert')
-const hasha = require('hasha')
+import assert from 'node:assert'
+import fs from 'node:fs'
+import hasha from 'hasha'
 
-const FileType = require('./')
+import FileType from './index.js'
 
 describe('stream-file-type', () => {
-  it('should detect the file type of a stream', () => {
+  it('should detect the file type of a stream', async () => {
     const input = fs.createReadStream('fixture/fixture.mid')
     const detector = new FileType()
 
@@ -16,20 +16,22 @@ describe('stream-file-type', () => {
     let emitted
     detector.on('file-type', fileType => { emitted = fileType })
 
-    return detector.fileTypePromise()
-      .then(type => assert.deepStrictEqual(type, { ext: 'mid', mime: 'audio/midi' }))
-      .then(() => assert.deepStrictEqual(emitted, { ext: 'mid', mime: 'audio/midi' }))
+    const type = await detector.fileTypePromise()
+
+    assert.deepStrictEqual(type, { ext: 'mid', mime: 'audio/midi' })
+    assert.deepStrictEqual(emitted, { ext: 'mid', mime: 'audio/midi' })
   })
 
-  it('should pass the input as-is', () => {
+  it('should pass the input as-is', async () => {
     const input = fs.createReadStream('fixture/fixture.mid')
     const detector = new FileType()
 
-    return hasha.fromStream(input.pipe(detector), { algorithm: 'sha1' })
-      .then(hash => assert.strictEqual(hash, '02cd79ed1d5f07eef736f79122aa89e6fe4f0d4b'))
+    const hash = await hasha.fromStream(input.pipe(detector), { algorithm: 'sha1' })
+
+    assert.strictEqual(hash, '02cd79ed1d5f07eef736f79122aa89e6fe4f0d4b')
   })
 
-  it('should handle files larger than 4100 bytes', () => {
+  it('should handle files larger than 4100 bytes', async () => {
     const input = fs.createReadStream('fixture/fixture-otto.woff2')
     const detector = new FileType()
 
@@ -38,12 +40,13 @@ describe('stream-file-type', () => {
     let emitted
     detector.on('file-type', fileType => { emitted = fileType })
 
-    return detector.fileTypePromise()
-      .then(type => assert.deepStrictEqual(type, { ext: 'woff2', mime: 'font/woff2' }))
-      .then(() => assert.deepStrictEqual(emitted, { ext: 'woff2', mime: 'font/woff2' }))
+    const type = await detector.fileTypePromise()
+
+    assert.deepStrictEqual(type, { ext: 'woff2', mime: 'font/woff2' })
+    assert.deepStrictEqual(emitted, { ext: 'woff2', mime: 'font/woff2' })
   })
 
-  it('should handle files with unknown file type', () => {
+  it('should handle files with unknown file type', async () => {
     const input = fs.createReadStream('fixture/test.invalidf')
     const detector = new FileType()
 
@@ -52,8 +55,9 @@ describe('stream-file-type', () => {
     let emitted
     detector.on('file-type', fileType => { emitted = fileType })
 
-    return detector.fileTypePromise()
-      .then(type => assert.strictEqual(type, null))
-      .then(() => assert.strictEqual(emitted, null))
+    const type = await detector.fileTypePromise()
+
+    assert.strictEqual(type, null)
+    assert.strictEqual(emitted, null)
   })
 })

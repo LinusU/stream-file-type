@@ -1,6 +1,13 @@
 import { Duplex, Readable } from 'stream'
 
-declare class FileType extends Duplex {
+declare namespace FileType {
+  interface FileTypeResult {
+    ext: string
+    mime: string
+  }
+}
+
+export default class FileType extends Duplex {
   fileTypePromise(): Promise<FileType.FileTypeResult | null>
 
   addListener(event: 'close', listener: () => void): this
@@ -39,12 +46,3 @@ declare class FileType extends Duplex {
   once(event: 'unpipe', listener: (src: Readable) => void): this
   once(event: string | symbol, listener: (...args: any[]) => void): this;
 }
-
-declare namespace FileType {
-  interface FileTypeResult {
-    ext: string
-    mime: string
-  }
-}
-
-export = FileType
