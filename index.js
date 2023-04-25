@@ -38,7 +38,8 @@ export default class FileType extends Transform {
 
   _flush (cb) {
     if (this[kStream] != null) {
-      this[kStream].end(() => cb(null))
+      this[kStream].on('close', () => cb(null))
+      this[kStream].destroy()
     } else {
       cb(null)
     }
